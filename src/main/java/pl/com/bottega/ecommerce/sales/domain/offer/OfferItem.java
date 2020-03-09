@@ -38,30 +38,30 @@ public class OfferItem {
 
     private Money discount;
 
-    public OfferItem(String productId, Money productPrice, String productName, Date productSnapshotDate, String productType,
+    public OfferItem(String productId, BigDecimal productPrice, String currency, String productName, Date productSnapshotDate, String productType,
             int quantity) {
-        this(productId, productPrice, productName, productSnapshotDate, productType, quantity, null, null);
+        this(productId, productPrice, currency, productName, productSnapshotDate, productType, quantity, null, null);
     }
 
-    public OfferItem(String productId, Money productPrice, String productName, Date productSnapshotDate, String productType,
-            int quantity, Money discount, String discountCause) {
+    public OfferItem(String productId, BigDecimal productPrice, String currency, String productName, Date productSnapshotDate, String productType,
+            int quantity, BigDecimal discount, String discountCause) {
         this.productId = productId;
-        this.productPrice = productPrice;
+        this.productPrice = new Money(productPrice, currency);
         this.productName = productName;
         this.productSnapshotDate = productSnapshotDate;
         this.productType = productType;
 
         this.quantity = quantity;
-        this.discount = discount;
+        this.discount = new Money(discount, currency);
         this.discountCause = discountCause;
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
-            discountValue = discountValue.add(discount.getDenomination());
+            discountValue = discountValue.add(this.discount.getDenomination());
         }
 
         this.totalCost = new Money(productPrice.multiply(new BigDecimal(quantity))
-                                     .subtract(discountValue), "");
+                                     .subtract(discountValue), currency);
     }
 
     public String getProductId() {
