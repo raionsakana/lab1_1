@@ -27,4 +27,12 @@ public class Money {
     public void setDenomination(BigDecimal denomination) {
         this.denomination = denomination;
     }
+
+    public BigDecimal multiply(BigDecimal bigDecimal) {
+        return this.denomination.multiply(bigDecimal);
+    }
+
+    public int compareTo(Money totalCost) {
+        return this.denomination.compareTo(totalCost.getDenomination());
+    }
 }
